@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <!-- 1. Create products table -->
+    <changeSet id="1-create-products-table" author="admin">
+        <createTable tableName="products">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(15)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_eur" type="DECIMAL(10,2)"/>
+            <column name="price_usd" type="DECIMAL(10,2)"/>
+            <column name="description" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <!-- 2. Create reviews table -->
+    <changeSet id="2-create-reviews-table" author="admin">
+        <createTable tableName="reviews">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reviewer" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="reviews"
+                baseColumnNames="product_id"
+                constraintName="fk_review_product"
+                referencedTableName="products"
+                referencedColumnNames="id"/>
+
+    </changeSet>
+
+    <!-- 3. Insert 5 products -->
+    <changeSet id="3-insert-products" author="admin">
+        <insert tableName="products">
+            <column name="code" value="PROD00000000001"/>
+            <column name="name" value="Super Widget"/>
+            <column name="price_eur" valueNumeric="49.99"/>
+            <column name="price_usd" valueNumeric="54.99"/>
+            <column name="description" value="A versatile and reliable widget."/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="code" value="PROD00000000002"/>
+            <column name="name" value="Gadget Max"/>
+            <column name="price_eur" valueNumeric="79.00"/>
+            <column name="price_usd" valueNumeric="85.00"/>
+            <column name="description" value="Sleek gadget with modern design."/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="code" value="PROD00000000003"/>
+            <column name="name" value="Device Pro"/>
+            <column name="price_eur" valueNumeric="120.00"/>
+            <column name="price_usd" valueNumeric="130.00"/>
+            <column name="description" value="Professional-grade device with premium features."/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="code" value="PROD00000000004"/>
+            <column name="name" value="Tool Master"/>
+            <column name="price_eur" valueNumeric="99.90"/>
+            <column name="price_usd" valueNumeric="105.50"/>
+            <column name="description" value="Advanced tool for every workshop."/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="code" value="PROD00000000005"/>
+            <column name="name" value="Mega Kit"/>
+            <column name="price_eur" valueNumeric="150.00"/>
+            <column name="price_usd" valueNumeric="160.00"/>
+            <column name="description" value="Complete kit with everything you need."/>
+        </insert>
+    </changeSet>
+
+    <!-- 4. Insert 3 reviews for each product -->
+    <changeSet id="4-insert-reviews" author="admin">
+        <!-- Product 1 -->
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="1"/>
+            <column name="reviewer" value="Alice"/>
+            <column name="text" value="Excellent quality."/>
+            <column name="rating" valueNumeric="5"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="1"/>
+            <column name="reviewer" value="Bob"/>
+            <column name="text" value="Very useful product."/>
+            <column name="rating" valueNumeric="4"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="1"/>
+            <column name="reviewer" value="Carol"/>
+            <column name="text" value="Good, but a bit pricey."/>
+            <column name="rating" valueNumeric="3"/>
+        </insert>
+
+        <!-- Product 2 -->
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="2"/>
+            <column name="reviewer" value="Dan"/>
+            <column name="text" value="Stylish and functional."/>
+            <column name="rating" valueNumeric="4"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="2"/>
+            <column name="reviewer" value="Eve"/>
+            <column name="text" value="Does the job well."/>
+            <column name="rating" valueNumeric="3"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="2"/>
+            <column name="reviewer" value="Frank"/>
+            <column name="text" value="Battery life could be better."/>
+            <column name="rating" valueNumeric="2"/>
+        </insert>
+
+        <!-- Product 3 -->
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="3"/>
+            <column name="reviewer" value="Grace"/>
+            <column name="text" value="Fantastic for professionals."/>
+            <column name="rating" valueNumeric="5"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="3"/>
+            <column name="reviewer" value="Henry"/>
+            <column name="text" value="Solid performance."/>
+            <column name="rating" valueNumeric="1"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="3"/>
+            <column name="reviewer" value="Irene"/>
+            <column name="text" value="Would recommend it."/>
+            <column name="rating" valueNumeric="1"/>
+        </insert>
+
+        <!-- Product 4 -->
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="4"/>
+            <column name="reviewer" value="Jack"/>
+            <column name="text" value="Very handy in the workshop."/>
+            <column name="rating" valueNumeric="3"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="4"/>
+            <column name="reviewer" value="Kate"/>
+            <column name="text" value="Highly durable."/>
+            <column name="rating" valueNumeric="2"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="4"/>
+            <column name="reviewer" value="Leo"/>
+            <column name="text" value="Gets the job done."/>
+            <column name="rating" valueNumeric="2"/>
+        </insert>
+
+        <!-- Product 5 -->
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="5"/>
+            <column name="reviewer" value="Mia"/>
+            <column name="text" value="Everything you need in one box!"/>
+            <column name="rating" valueNumeric="5"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="5"/>
+            <column name="reviewer" value="Nate"/>
+            <column name="text" value="Convenient and high quality."/>
+            <column name="rating" valueNumeric="5"/>
+        </insert>
+        <insert tableName="reviews">
+            <column name="product_id" valueNumeric="5"/>
+            <column name="reviewer" value="Olivia"/>
+            <column name="text" value="Could include more accessories."/>
+            <column name="rating" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
