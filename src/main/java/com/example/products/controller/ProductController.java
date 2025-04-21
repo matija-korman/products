@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/products")
 @AllArgsConstructor
@@ -52,7 +50,7 @@ public class ProductController {
     }
 
     @GetMapping("/popular")
-    public List<PopularProductResponse> getPopularProducts() {
-        return productService.getTopRatedProducts();
+    public PopularProductResponse getPopularProducts() {
+        return new PopularProductResponse(productService.getTopRatedProducts());
     }
 }

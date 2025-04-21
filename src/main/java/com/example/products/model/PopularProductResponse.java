@@ -1,7 +1,8 @@
 package com.example.products.model;
 
+import java.util.List;
+
 public record PopularProductResponse(
-        String name,
-        double averageRating) {
+        List<PopularProduct> popularProducts) {
 
 }

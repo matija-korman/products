@@ -1,7 +1,7 @@
 package com.example.products.repository;
 
 import com.example.products.domain.Product;
-import com.example.products.model.PopularProductResponse;
+import com.example.products.model.PopularProduct;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -14,7 +14,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
     @Query("""
-            SELECT new com.example.products.model.PopularProductResponse(
+            SELECT new com.example.products.model.PopularProduct(
                 p.name, ROUND(AVG(r.rating), 1)
             )
             FROM Product p
@@ -22,6 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
             GROUP BY p.id, p.code, p.name
             ORDER BY AVG(r.rating) DESC
             """)
-    List<PopularProductResponse> findTopRatedProducts(Pageable pageable);
+    List<PopularProduct> findTopRatedProducts(Pageable pageable);
 
 }

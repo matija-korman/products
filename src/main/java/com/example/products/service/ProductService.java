@@ -1,7 +1,7 @@
 package com.example.products.service;
 
 import com.example.products.domain.Product;
-import com.example.products.model.PopularProductResponse;
+import com.example.products.model.PopularProduct;
 import com.example.products.repository.ProductRepository;
 import com.example.products.repository.ProductSpecification;
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class ProductService {
         return productRepository.findAll(ProductSpecification.filterByCodeAndName(code, name), pageable);
     }
 
-    public List<PopularProductResponse> getTopRatedProducts() {
+    public List<PopularProduct> getTopRatedProducts() {
         return productRepository.findTopRatedProducts(PageRequest.of(0, NUM_OF_POPULAR_PRODUCTS));
     }
 }

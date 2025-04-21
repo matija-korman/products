@@ -1,6 +1,7 @@
 package com.example.products;
 
 import com.example.products.model.PagedResponse;
+import com.example.products.model.PopularProductResponse;
 import com.example.products.model.ProductResponse;
 import com.example.products.service.ExchangeRateService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -62,15 +63,21 @@ public class ProductControllerTest {
 
     @Test
     void shouldReturnTopThreePopularProducts() throws Exception {
-        mockMvc.perform(get("/products/popular"))
+        var result = mockMvc.perform(get("/products/popular"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(3))
-                .andExpect(jsonPath("$[0].name").value("Mega Kit"))
-                .andExpect(jsonPath("$[0].averageRating").value(5))
-                .andExpect(jsonPath("$[1].name").value("Super Widget"))
-                .andExpect(jsonPath("$[1].averageRating").value(4))
-                .andExpect(jsonPath("$[2].name").value("Gadget Max"))
-                .andExpect(jsonPath("$[2].averageRating").value(3));
+                .andReturn();
+
+        PopularProductResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), PopularProductResponse.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.popularProducts()).isNotEmpty();
+        assertThat(response.popularProducts().size()).isEqualTo(3);
+        assertThat(response.popularProducts().get(0).name()).isEqualTo("Mega Kit");
+        assertThat(response.popularProducts().get(0).averageRating()).isEqualTo(5);
+        assertThat(response.popularProducts().get(1).name()).isEqualTo("Super Widget");
+        assertThat(response.popularProducts().get(1).averageRating()).isEqualTo(4);
+        assertThat(response.popularProducts().get(2).name()).isEqualTo("Gadget Max");
+        assertThat(response.popularProducts().get(2).averageRating()).isEqualTo(3);
     }
 
     @Test
